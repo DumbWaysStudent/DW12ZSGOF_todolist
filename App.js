@@ -100,7 +100,10 @@ const styles = StyleSheet.create({
     flex: 8,
   },
   list : {
-    flex: 5
+    flex: 5,
+  },
+  checkbox : {
+    flex: 1,
   },
   trash : {
     color: "red",

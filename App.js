@@ -19,8 +19,9 @@ class App extends React.Component {
         {id: 4, task : 'Run', isChecked: false}
       ],
  
-      Holder: ''
- 
+      Holder: '',
+      status:'add',
+      id_update:0
     }
  
   }
@@ -48,6 +49,19 @@ check=(id)=>{
     }
   })
 }
+
+update_todo=()=>{
+  const array = [...this.state.todo]
+ array[this.state.id_update].task = this.state.Holder
+ this.setState({todo : array, Holder:"", status:"add"})
+ 
+}
+onUpdate=(item,id)=>{
+  
+  this.setState({id_update:id, Holder : item.task,status : 'update'})
+
+}
+
     render() {
 
 
@@ -60,7 +74,9 @@ check=(id)=>{
           <Item regular style={styles.input}>
           <Input placeholder='New Todo' onChangeText={(text)=>{this.setState({Holder:text})}} value={this.state.Holder}/>
           </Item>
-          <Button success onPress={()=> this.add_todo()} style={styles.button}><Text> ADD </Text></Button>
+          {this.state.status=='add'? <Button success onPress={()=> this.add_todo()} style={styles.button}><Text> ADD </Text></Button> 
+          :
+          <Button success onPress={()=> this.update_todo()} style={styles.button}><Text> UPDATE </Text></Button> }
           </View>
           
           
@@ -72,6 +88,7 @@ check=(id)=>{
                         <View key={item.id} style={styles.item} >
                             <CheckBox onPress={()=> this.check(item.id)} checked={item.isChecked} style={styles.CheckBox} />
                             <Text style={styles.list}>{item.task}</Text> 
+                            <Icon onPress={()=>this.onUpdate(item,item.id)} name="pen" type="FontAwesome5" style={styles.pen}/>
                             <Icon onPress={()=>this.onDelete(item)} name="trash" style={styles.trash}/>
                         </View>
                     )
@@ -116,6 +133,12 @@ const styles = StyleSheet.create({
   },
   trash : {
     color: "red",
+  },
+  pen : {
+    fontSize: 20,
+    marginRight:20,
+    marginTop: 3,
+    color : "skyblue"
   }
 })
 

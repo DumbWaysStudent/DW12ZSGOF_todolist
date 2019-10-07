@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet} from 'react-native';
-import { Container, Content, Input, Item, Button, Icon} from 'native-base';
+import { Container, Content, Input, Item, Button, Icon, CheckBox} from 'native-base';
 
 
 
@@ -9,14 +9,14 @@ class App extends React.Component {
   constructor(props) {
     
     super(props)
- 
+    
     this.state = {
       todo : [
-        {id: 0, task : 'Work'},
-        {id: 1, task : 'Swim'},
-        {id: 2, task : 'Study'},
-        {id: 3, task : 'Sleep'},
-        {id: 4, task : 'Run'}
+        {id: 0, task : 'Work', isChecked: false},
+        {id: 1, task : 'Swim', isChecked: false},
+        {id: 2, task : 'Study', isChecked: false},
+        {id: 3, task : 'Sleep', isChecked: false},
+        {id: 4, task : 'Run', isChecked: false}
       ],
  
       Holder: ''
@@ -36,6 +36,17 @@ onDelete=(deleteItem)=>{
   const {todo} = this.state
   const filtercheck = todo.filter(function(item){return item.id != deleteItem.id})
   this.setState({todo:filtercheck})
+}
+
+check=(id)=>{
+  let index = this.state.todo.findIndex((x)=> x.id == id)
+  this.setState((state)=>{
+    if (state.todo[index].isChecked==false){
+      return state.todo[index].isChecked = true
+    }else{
+      return state.todo[index].isChecked = false
+    }
+  })
 }
     render() {
 
@@ -59,6 +70,7 @@ onDelete=(deleteItem)=>{
                   
                     return (
                         <View key={item.id} style={styles.item} >
+                            <CheckBox onPress={()=> this.check(item.id)} checked={item.isChecked} style={styles.CheckBox} />
                             <Text style={styles.list}>{item.task}</Text> 
                             <Icon onPress={()=>this.onDelete(item)} name="trash" style={styles.trash}/>
                         </View>
@@ -98,12 +110,9 @@ const styles = StyleSheet.create({
   },
   list : {
     flex: 8,
+    marginStart: 30
   },
-  list : {
-    flex: 5,
-  },
-  checkbox : {
-    flex: 1,
+  CheckBox : {
   },
   trash : {
     color: "red",

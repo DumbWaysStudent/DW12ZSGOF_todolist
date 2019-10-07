@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet} from 'react-native';
-import { Container, Content, Input, Item, Button} from 'native-base';
+import { Container, Content, Input, Item, Button, Icon} from 'native-base';
 
 
 
@@ -32,6 +32,11 @@ add_todo=()=>{
    this.setState({Holder:''})
 }
 
+onDelete=(deleteItem)=>{
+  const {todo} = this.state
+  const filtercheck = todo.filter(function(item){return item.id != deleteItem.id})
+  this.setState({todo:filtercheck})
+}
     render() {
 
 
@@ -55,6 +60,7 @@ add_todo=()=>{
                     return (
                         <View key={item.id} style={styles.item} >
                             <Text style={styles.list}>{item.task}</Text> 
+                            <Icon onPress={()=>this.onDelete(item)} name="trash" style={styles.trash}/>
                         </View>
                     )
                     
@@ -98,6 +104,9 @@ const styles = StyleSheet.create({
   },
   checkbox : {
     flex: 1,
+  },
+  trash : {
+    color: "red",
   }
 })
 
